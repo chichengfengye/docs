@@ -1,0 +1,5 @@
+1.jpa忘了，得好好复习
+
+2.git的使用还不熟练，比如今天拉下来了一个代码，却不能fetch
+
+3.spring security
