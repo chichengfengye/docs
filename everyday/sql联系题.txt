@@ -378,6 +378,14 @@ select a.c_id,b.c_name,MAX(s_score),MIN(s_score),ROUND(AVG(s_score),2),
 	ROUND(100*(SUM(case when a.s_score>=90 then 1 else 0 end)/SUM(case when a.s_score then 1 else 0 end)),2) as 优秀率
 	from score a left join course b on a.c_id = b.c_id GROUP BY a.c_id,b.c_name
 	
+我的：
+  SELECT sc.`c_id`, co.`c_name` AS 课程name , MAX(sc.`s_score`), MIN(sc.`s_score`), AVG(sc.`s_score`) AS 课程ID,
+	100*(SUM(CASE WHEN sc.s_score >= 60 THEN 1 ELSE 0 END )/COUNT(sc.`c_id`)) AS 及格率,
+	100*(SUM(CASE WHEN sc.s_score >= 70 AND sc.`s_score` < 80 THEN 1 ELSE 0 END )/COUNT(sc.`c_id`)) AS 中等率,
+	100*(SUM(CASE WHEN sc.s_score >= 80 AND sc.`s_score` < 90 THEN 1 ELSE 0 END )/COUNT(sc.`c_id`)) AS 优良率,
+ 	100*(SUM(CASE WHEN sc.s_score >= 90 THEN 1 ELSE 0 END )/COUNT(sc.`c_id`)) AS 优秀率
+    FROM score sc LEFT JOIN course co ON sc.`c_id` = co.`c_id`
+  GROUP BY sc.`c_id`
 
 
 -- 19、按各科成绩进行排序，并显示排名
@@ -389,6 +397,8 @@ select a.c_id,b.c_name,MAX(s_score),MIN(s_score),ROUND(AVG(s_score),2),
     from (
         select s_id,c_id,s_score from score GROUP BY s_id,c_id,s_score ORDER BY s_score DESC
 )a,(select @k:=0,@i:=0,@score:=0)s
+
+
 --@k1051785839的写法
 (select * from (select 
 t1.c_id,
@@ -410,6 +420,19 @@ t1.s_score,
 (select count(distinct t2.s_score) from score t2 where t2.s_score>=t1.s_score and t2.c_id='03') rank
 FROM score t1 where t1.c_id='03'
 order by t1.s_score desc) t3)
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- 20、查询学生的总成绩并进行排名
 select a.s_id,
 	@i:=@i+1 as i,
